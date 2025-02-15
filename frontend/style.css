@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+h1 {
+    color: #333;
+}
+input {
+    padding: 10px;
+    width: 60%;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #218838;
+}
+.results-container {
+    max-width: 700px;
+    margin: 20px auto;
+    text-align: left;
+}
+.result {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+.result a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #1a0dab;
+    font-weight: bold;
+}
+.result a:hover {
+    text-decoration: underline;
+}
+.result .link {
+    font-size: 14px;
+    color: #006621;
+}
+.result .snippet {
+    font-size: 14px;
+    color: #545454;
+}
+#downloadButton {
+    display: none;
+    margin-top: 10px;
+}

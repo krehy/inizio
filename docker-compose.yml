@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: nginx:latest
+    container_name: google_scraper_frontend
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: google_scraper_backend
+    ports:
+      - "3002:3002"
+    environment:
+      - API_KEY=AIzaSyCmXktsmEptpY-Q9CZDz8dZwyXAgnG__Zc
+      - CX=003a14d5c7e6647d1
+    depends_on:
+      - proxy
+
+  proxy:
+    image: nginx:latest
+    container_name: google_scraper_proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+
+volumes:
+  frontend:
+  backend:

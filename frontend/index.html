@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Google Scraper</title>
+</head>
+<body>
+    <h1>Google Scraper</h1>
+    <input type="text" id="keyword" placeholder="Zadejte klíčové slovo">
+    <button onclick="searchGoogle()">Hledat</button>
+    <button id="downloadButton" onclick="downloadResults()">Stáhnout výsledky</button>
+    <div class="results-container" id="results"></div>
+    
+    <script>
+        let currentResults = [];
+
+        async function searchGoogle() {
+    const keyword = document.getElementById("keyword").value;
+    if (!keyword) {
+        alert("Zadejte klíčové slovo!");
+        return;
+    }
+    
+    try {
+        const response = await fetch(`http://localhost:3002/search?query=${encodeURIComponent(keyword)}`);
+        if (!response.ok) {
+            throw new Error(`Chyba serveru: ${response.status}`);
+        }
+        
+        const results = await response.json();
+        currentResults = results;
+        const resultsContainer = document.getElementById("results");
+        resultsContainer.innerHTML = "";
+
+        results.forEach(result => {
+            const div = document.createElement("div");
+            div.classList.add("result");
+            
+            const title = document.createElement("a");
+            title.href = result.link;
+            title.textContent = result.title;
+            title.target = "_blank";
+            
+            const link = document.createElement("div");
+            link.classList.add("link");
+            link.textContent = result.link;
+            
+            const snippet = document.createElement("div");
+            snippet.classList.add("snippet");
+            snippet.textContent = result.snippet;
+            
+            div.appendChild(title);
+            div.appendChild(link);
+            div.appendChild(snippet);
+            resultsContainer.appendChild(div);
+        });
+        
+        document.getElementById("downloadButton").style.display = "inline-block";
+    } catch (error) {
+        console.error("Chyba při komunikaci s backendem:", error);
+        alert("Nepodařilo se získat výsledky. Podívej se do konzole (F12).");
+    }
+}
+
+        function downloadResults() {
+            if (currentResults.length === 0) {
+                alert("Nejsou žádné výsledky ke stažení.");
+                return;
+            }
+
+            const csvContent = "data:text/csv;charset=utf-8," + 
+                "Titulek,URL,Popis\n" +
+                currentResults.map(result => `${result.title},${result.link},${result.snippet}`).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "vysledky.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
