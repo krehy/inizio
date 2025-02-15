@@ -24,7 +24,7 @@
     }
     
     try {
-        const response = await fetch(`https://inizio-1.onrender.com//search?query=${encodeURIComponent(keyword)}`);
+        const response = await fetch(`https://inizio-1.onrender.com/search?query=${encodeURIComponent(keyword)}`);
         if (!response.ok) {
             throw new Error(`Chyba serveru: ${response.status}`);
         }
